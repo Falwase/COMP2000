@@ -1,0 +1,57 @@
+// File name: Decode.hdl
+
+/**
+ * The instruction decoder determines the type of instruction (a or c)
+ * and decodes those instructions.
+ * The input in[16] is the instruction to be decoded.
+ * The outputs are used as follows:
+ *   type:      0 if a-instruction, 1 if c-instruction. 
+ *   a:         Determines whether the ALU input uses A (0) or Memory[A] (1)
+ *   c1 .. c6:  Op-code wires to ALU
+ *   d1 d2 d3:  Destination wires to the load pins of A,D registers and Memory
+ *   j1 j2 j3:  Jump wires to Jump Unit
+ * For a-instructions, d1 should be 1, all other outputs should be 0
+ * For c-instructions, outputs should correspond to their bits in the c-instruction
+ */
+
+CHIP Decode {
+
+    IN  in[16];             // instruction to decode
+
+    OUT type,               // Instruction type
+        a,                  // ALU A/M
+        c1,c2,c3,c4,c5,c6,  // Op-code wires to ALU
+        d1,d2,d3,           // Destination wires
+        j1,j2,j3;           // Jump wires
+
+PARTS:
+    // Differentiation between A-instruction and C-instruction
+        And(a=true, b=in[0], out=type);
+
+        // Set the ALU input control signal (a) based on the type
+        // If it's an A-instruction, set a to 0; otherwise, set a to 1
+        Not(in=type, out=notType);
+        And(a=in[0], b=notType, out=a);
+
+        // Set the op-code wires (c1 to c6) for the ALU based on the instruction type
+        // If it's a C-instruction, set them to the instruction bits
+        And16(a=in[0..5], b=type, out=c1);
+        And16(a=in[6..11], b=type, out=c2);
+        And16(a=in[12..17], b=type, out=c3);
+        And16(a=in[18..23], b=type, out=c4);
+        And16(a=in[24..29], b=type, out=c5);
+        And16(a=in[30..35], b=type, out=c6);
+
+        // Set the destination wires (d1 to d3) based on the type
+        // If it's an A-instruction, set d1 to 1; otherwise, set d1 to 0
+        Not(in=type, out=notType2);
+        Mux16(a=false, b=notType2, sel=type, out=d1); // Corrected Mux16 usage
+        // Set d2 and d3 to 0 in both cases
+        And16(a=in, b=true, out=d2);
+        And16(a=in, b=true, out=d3);
+
+        // Set the jump wires (j1, j2, j3) to 0 for now (you may implement them later)
+        Or(a=false, b=false, out=j1);
+        Or(a=false, b=false, out=j2);
+        Or(a=false, b=false, out=j3);
+}
