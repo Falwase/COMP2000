@@ -4,7 +4,7 @@
 #include "Reverser.h"
 #include <string>
 
-int reverseDigit(int value) {
+int Reverser::reverseDigit(int value) {
 
     static int sum,r;
         
@@ -20,7 +20,7 @@ int reverseDigit(int value) {
     return sum;
 }
 
-std::string reverseString(std::string characters) {
+std::string Reverser::reverseString(std::string characters) {
     
     if(characters.size() == 0) {
         return characters;
