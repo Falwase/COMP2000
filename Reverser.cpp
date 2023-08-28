@@ -1,36 +1,34 @@
+#ifndef REVERSER_CPP
+#define REVERSER_CPP
 
+#include "Reverser.h"
 #include <string>
 
-class Reverser
-{
+int reverseDigit(int value) {
 
-public:
+    static int sum,r;
+        
+    if(value){
+        r=value%10;
+        sum=sum*10+r;
+        reverseDigit(value/10);
+    }
+    else{
+        return 0;
+    }
+        
+    return sum;
+}
+
+std::string reverseString(std::string characters) {
     
-    int reverseDigit(int value) {
-
-        static int sum,r;
-        
-        if(value){
-            r=value%10;
-            sum=sum*10+r;
-            reverseDigit(value/10);
-        }
-        else{
-            return 0;
-        }
-        
-        return sum;
+    if(characters.size() == 0) {
+        return characters;
     }
 
-    std::string reverseString(std::string characters) {
-        
-        if(characters.size() == 0) {
-            return characters;
-        }
+    return reverseString(characters.substr(1)) + characters[0];
+}
 
-        return reverseString(characters.substr(1)) + characters[0];
-    }
-
-};
+#endif
 
 
