@@ -2,6 +2,8 @@
 #define BUBBLESORT_CPP
 
 #include "BubbleSort.h"
+#include "QuickSort.h"
+#include "RecursiveBinarySearch.h"
 #include <vector>
 
 std::vector<int> BubbleSort::sort(std::vector<int> list) {

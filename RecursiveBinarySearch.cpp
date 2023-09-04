@@ -6,9 +6,7 @@
 
 bool RecursiveBinarySearch::search(std::vector<int>, int) {
     
-    bool search(std::vector<int>, int) {
-
-    }
+    bool search(std::vector<int>, int);
 }
 
 #endif
